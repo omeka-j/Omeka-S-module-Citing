@@ -1,0 +1,35 @@
+<?php
+$translate = $this->plugin('translate');
+?>
+<div style="margin: 10px">
+<b><?php echo $translate('Citation');; ?></b>
+<br/>
+<span id="citing"></span>
+<br/><input style="margin : 10px;" type="button" value="<?php echo $translate('Copy'); ?>" onclick="copy()"/>
+</div>
+<script>
+    let title = "<?php echo $title; ?>";
+    let url = "<?php echo $url; ?>";
+
+    //記載例
+    let text = `${title}\n(${url})`
+    document.getElementById('citing').textContent = text;
+
+    async function copy(){
+        var listener = function(e){
+
+            e.clipboardData.setData("text/plain" , text);    
+            // 本来のイベントをキャンセル
+            e.preventDefault();
+            // 終わったら一応削除
+            document.removeEventListener("copy", listener);
+        }
+
+        // コピーのイベントが発生したときに、クリップボードに書き込むようにしておく
+        document.addEventListener("copy" , listener);
+
+        // コピー
+        document.execCommand("copy");
+        alert("<?php echo $translate('Copied'); ?>")
+    }
+</script>
